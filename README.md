@@ -17,3 +17,8 @@ $ nodetool ring > ringfile.txt
 $ ringify ringfile.txt partition_abcd1234
 ```
 
+You can also query for partition keys spanning multiple columns using `:` as
+a separator
+```
+$ ringify ringfile.txt partition_abcd1234:pos_1234
+```
