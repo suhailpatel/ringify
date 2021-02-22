@@ -7,6 +7,9 @@ import "unsafe"
 
 // Taken from GoCQL internal/murmur3
 // https://github.com/gocql/gocql/blob/master/internal/murmur/murmur.go
+//
+// Copyright (c) 2016, The Gocql authors
+// All rights reserved.
 
 const (
 	c1    int64 = -8663945395140668459 // 0x87c37b91114253d5
