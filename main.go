@@ -11,6 +11,8 @@ import (
 	"strings"
 )
 
+var ipRegex = regexp.MustCompile(`^(?:[0-9]{1,3}\.){3}[0-9]{1,3}.*`)
+
 type ringToken struct {
 	address string
 	rack    string
@@ -27,13 +29,12 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not open ring file: %v", err)
 		os.Exit(1)
-
 	}
 
 	scanner := bufio.NewScanner(f)
 	ringTokens := make([]ringToken, 0, 50*256)
 	for scanner.Scan() {
-		if !strings.HasPrefix(scanner.Text(), "10.") {
+		if !ipRegex.Match([]byte(scanner.Text())) {
 			continue
 		}
 
@@ -101,12 +102,12 @@ func hashableBytes(data []byte) []byte {
 	// Source: https://github.com/apache/cassandra/blob/cassandra-3.0.20/src/java/org/apache/cassandra/db/marshal/CompositeType.java#L363-L369
 	//
 	// So say you had a 2 level composite key hello:suhail
-	//  	hello -> 68 65 6c 6c 6f
-	// 		suhail -> 73 75 68 61 69 6c
+	//      hello -> 68 65 6c 6c 6f
+	//      suhail -> 73 75 68 61 69 6c
 	//
 	//	This converts to
-	//  	hello -> 00 05 68 65 6c 6c 6f 00
-	// 		suhail -> 00 06 73 75 68 61 69 6c 00
+	//      hello -> 00 05 68 65 6c 6c 6f 00
+	//      suhail -> 00 06 73 75 68 61 69 6c 00
 	//
 	//
 	out := make([]byte, 0, len(split))
